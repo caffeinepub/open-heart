@@ -10,13 +10,12 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
       fontFamily: {
-        nunito: ["Nunito", "system-ui", "sans-serif"],
+        figtree: ["Figtree", "system-ui", "sans-serif"],
+        fraunces: ["Fraunces", "Georgia", "serif"],
       },
       colors: {
         border: "oklch(var(--border))",
@@ -52,13 +51,15 @@ export default {
           DEFAULT: "oklch(var(--card))",
           foreground: "oklch(var(--card-foreground))",
         },
-        bloom: {
-          mint: "oklch(var(--bloom-mint))",
-          peach: "oklch(var(--bloom-peach))",
-          lavender: "oklch(var(--bloom-lavender))",
-          "user-bubble": "oklch(var(--bloom-user-bubble))",
-          "ai-bubble": "oklch(var(--bloom-ai-bubble))",
-          seafoam: "oklch(var(--bloom-seafoam))",
+        oh: {
+          rose: "oklch(var(--oh-rose))",
+          peach: "oklch(var(--oh-peach))",
+          lavender: "oklch(var(--oh-lavender))",
+          cream: "oklch(var(--oh-cream))",
+          blush: "oklch(var(--oh-blush))",
+          "dusty-rose": "oklch(var(--oh-dusty-rose))",
+          mauve: "oklch(var(--oh-mauve))",
+          "warm-white": "oklch(var(--oh-warm-white))",
         },
         chart: {
           1: "oklch(var(--chart-1))",
@@ -82,14 +83,15 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xl: "1.5rem",
-        "2xl": "2rem",
-        "3xl": "3rem",
+        xl: "1.75rem",
+        "2xl": "2.5rem",
+        "3xl": "3.5rem",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(0,0,0,0.05)",
-        soft: "0 4px 24px -4px rgba(0,0,0,0.08), 0 1px 4px -1px rgba(0,0,0,0.04)",
-        bloom: "0 8px 40px -8px rgba(0,0,0,0.10), 0 2px 8px -2px rgba(0,0,0,0.05)",
+        xs: "0 1px 2px 0 rgba(0,0,0,0.04)",
+        soft: "0 4px 24px -4px rgba(180,80,60,0.10), 0 1px 4px -1px rgba(180,80,60,0.05)",
+        warm: "0 8px 40px -8px rgba(200,100,80,0.18), 0 2px 8px -2px rgba(200,100,80,0.09)",
+        glow: "0 0 0 3px oklch(0.62 0.17 15 / 0.2), 0 4px 20px oklch(0.62 0.17 15 / 0.15)",
       },
       keyframes: {
         "accordion-down": {

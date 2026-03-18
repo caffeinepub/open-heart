@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,53 +7,52 @@
 
 @layer base {
   :root {
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    /* Bloom color palette */
-    --background: 0.93 0.025 55;
-    --foreground: 0.14 0 0;
-    --card: 0.99 0 0;
-    --card-foreground: 0.14 0 0;
-    --popover: 0.99 0 0;
-    --popover-foreground: 0.14 0 0;
-    --primary: 0.57 0.085 40;
-    --primary-foreground: 0.99 0 0;
-    --secondary: 0.82 0.04 285;
-    --secondary-foreground: 0.14 0 0;
-    --muted: 0.9 0.015 55;
-    --muted-foreground: 0.42 0 0;
-    --accent: 0.88 0.04 158;
-    --accent-foreground: 0.2 0 0;
+    /* Open Heart - soft warm palette: peach, lavender, rose, cream */
+    --background: 0.97 0.012 55;
+    --foreground: 0.22 0.04 30;
+    --card: 1 0.005 50;
+    --card-foreground: 0.22 0.04 30;
+    --popover: 1 0.005 50;
+    --popover-foreground: 0.22 0.04 30;
+    --primary: 0.62 0.17 15;
+    --primary-foreground: 0.98 0.005 50;
+    --secondary: 0.88 0.06 295;
+    --secondary-foreground: 0.25 0.08 295;
+    --muted: 0.94 0.015 55;
+    --muted-foreground: 0.5 0.04 40;
+    --accent: 0.9 0.08 50;
+    --accent-foreground: 0.25 0.05 30;
     --destructive: 0.577 0.245 27.325;
     --destructive-foreground: 0.985 0 0;
-    --border: 0.87 0.02 60;
-    --input: 0.87 0.02 60;
-    --ring: 0.57 0.085 40;
+    --border: 0.9 0.025 60;
+    --input: 0.9 0.025 60;
+    --ring: 0.62 0.17 15;
 
-    /* Custom Bloom tokens */
-    --bloom-mint: 0.88 0.04 158;
-    --bloom-peach: 0.82 0.07 50;
-    --bloom-lavender: 0.8 0.06 290;
-    --bloom-user-bubble: 0.9 0.035 55;
-    --bloom-ai-bubble: 0.88 0.04 258;
-    --bloom-seafoam: 0.86 0.04 162;
-    --bloom-blob1: 0.87 0.05 158;
-    --bloom-blob2: 0.9 0.04 55;
-    --bloom-blob3: 0.82 0.06 290;
+    /* Open Heart custom tokens */
+    --oh-rose: 0.62 0.17 15;
+    --oh-peach: 0.9 0.1 50;
+    --oh-lavender: 0.8 0.09 295;
+    --oh-cream: 0.97 0.012 55;
+    --oh-blush: 0.88 0.09 20;
+    --oh-dusty-rose: 0.72 0.12 15;
+    --oh-mauve: 0.68 0.1 340;
+    --oh-warm-white: 0.995 0.003 60;
 
-    --chart-1: 0.646 0.222 41.116;
-    --chart-2: 0.6 0.118 184.704;
-    --chart-3: 0.398 0.07 227.392;
-    --chart-4: 0.828 0.189 84.429;
-    --chart-5: 0.769 0.188 70.08;
-    --sidebar: 0.93 0.025 55;
-    --sidebar-foreground: 0.14 0 0;
-    --sidebar-primary: 0.57 0.085 40;
-    --sidebar-primary-foreground: 0.99 0 0;
-    --sidebar-accent: 0.88 0.04 158;
-    --sidebar-accent-foreground: 0.2 0 0;
-    --sidebar-border: 0.87 0.02 60;
-    --sidebar-ring: 0.57 0.085 40;
+    --chart-1: 0.62 0.17 15;
+    --chart-2: 0.8 0.09 295;
+    --chart-3: 0.88 0.09 20;
+    --chart-4: 0.72 0.12 15;
+    --chart-5: 0.68 0.1 340;
+    --sidebar: 0.97 0.012 55;
+    --sidebar-foreground: 0.22 0.04 30;
+    --sidebar-primary: 0.62 0.17 15;
+    --sidebar-primary-foreground: 0.98 0.005 50;
+    --sidebar-accent: 0.88 0.06 295;
+    --sidebar-accent-foreground: 0.25 0.08 295;
+    --sidebar-border: 0.9 0.025 60;
+    --sidebar-ring: 0.62 0.17 15;
   }
 
   * {
@@ -60,44 +60,52 @@
   }
 
   body {
-    @apply bg-background text-foreground font-nunito;
+    @apply bg-background text-foreground font-figtree;
     background: linear-gradient(
-      135deg,
-      oklch(0.93 0.025 55) 0%,
-      oklch(0.91 0.035 140) 50%,
-      oklch(0.88 0.04 285) 100%
+      150deg,
+      oklch(0.97 0.018 55) 0%,
+      oklch(0.96 0.022 25) 35%,
+      oklch(0.95 0.02 305) 70%,
+      oklch(0.97 0.015 60) 100%
     );
     min-height: 100vh;
   }
 }
 
 @layer utilities {
-  .bloom-mint {
-    background-color: oklch(var(--bloom-mint));
+  .oh-rose {
+    background-color: oklch(var(--oh-rose));
   }
-  .bloom-peach {
-    background-color: oklch(var(--bloom-peach));
+  .oh-peach {
+    background-color: oklch(var(--oh-peach));
   }
-  .bloom-lavender {
-    background-color: oklch(var(--bloom-lavender));
+  .oh-lavender {
+    background-color: oklch(var(--oh-lavender));
   }
-  .bloom-user-bubble {
-    background-color: oklch(var(--bloom-user-bubble));
+
+  .text-gradient-rose {
+    background: linear-gradient(
+      135deg,
+      oklch(0.55 0.18 10),
+      oklch(0.65 0.15 350),
+      oklch(0.62 0.14 300)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .bloom-ai-bubble {
-    background-color: oklch(var(--bloom-ai-bubble));
+
+  .card-soft {
+    background: oklch(1 0.005 50 / 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.92 0.02 50 / 0.7);
   }
 
   .blob-shape {
     border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
   }
-
   .blob-shape-2 {
     border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%;
-  }
-
-  .blob-shape-3 {
-    border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%;
   }
 }
 
@@ -107,29 +115,56 @@
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-12px) rotate(3deg);
+    transform: translateY(-10px) rotate(2deg);
   }
 }
 
 @keyframes float-slow {
   0%,
   100% {
-    transform: translateY(0px) rotate(0deg) scale(1);
+    transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-8px) rotate(-2deg) scale(1.02);
+    transform: translateY(-6px) scale(1.02);
   }
 }
 
-@keyframes pulse-gentle {
-  0%,
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
   100% {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
     transform: scale(1);
   }
-  50% {
-    opacity: 0.7;
-    transform: scale(0.97);
+  15% {
+    transform: scale(1.15);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
@@ -142,6 +177,9 @@
 .animate-float-delay {
   animation: float 7s ease-in-out infinite 2s;
 }
-.animate-pulse-gentle {
-  animation: pulse-gentle 2s ease-in-out infinite;
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+.animate-heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
 }

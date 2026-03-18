@@ -10,26 +10,25 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface Entry {
+export type Category = { 'social' : null } |
+  { 'justToday' : null } |
+  { 'school' : null } |
+  { 'personal' : null } |
+  { 'health' : null };
+export type Time = bigint;
+export interface Win {
   'id' : bigint,
-  'nickname' : [] | [string],
-  'mood' : Mood,
   'text' : string,
   'response' : string,
   'timestamp' : Time,
+  'category' : [] | [Category],
 }
-export type Mood = { 'sad' : null } |
-  { 'anxious' : null } |
-  { 'happy' : null } |
-  { 'okay' : null } |
-  { 'overwhelmed' : null };
-export type Time = bigint;
 export interface _SERVICE {
-  'addEntry' : ActorMethod<[[] | [string], Mood, string], bigint>,
-  'deleteEntry' : ActorMethod<[bigint], undefined>,
-  'getEntriesByNickname' : ActorMethod<[string], Array<Entry>>,
-  'getEntryCount' : ActorMethod<[], bigint>,
-  'getRecentEntries' : ActorMethod<[], Array<Entry>>,
+  'addWin' : ActorMethod<[string, [] | [Category]], bigint>,
+  'deleteWin' : ActorMethod<[bigint], undefined>,
+  'getRecentWins' : ActorMethod<[], Array<Win>>,
+  'getWinCount' : ActorMethod<[], bigint>,
+  'getWinsByCategory' : ActorMethod<[Category], Array<Win>>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

@@ -89,179 +89,175 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface Entry {
+export type Time = bigint;
+export interface Win {
     id: bigint;
-    nickname?: string;
-    mood: Mood;
     text: string;
     response: string;
     timestamp: Time;
+    category?: Category;
 }
-export type Time = bigint;
-export enum Mood {
-    sad = "sad",
-    anxious = "anxious",
-    happy = "happy",
-    okay = "okay",
-    overwhelmed = "overwhelmed"
+export enum Category {
+    social = "social",
+    justToday = "justToday",
+    school = "school",
+    personal = "personal",
+    health = "health"
 }
 export interface backendInterface {
-    addEntry(nickname: string | null, mood: Mood, text: string): Promise<bigint>;
-    deleteEntry(id: bigint): Promise<void>;
-    getEntriesByNickname(nickname: string): Promise<Array<Entry>>;
-    getEntryCount(): Promise<bigint>;
-    getRecentEntries(): Promise<Array<Entry>>;
+    addWin(text: string, category: Category | null): Promise<bigint>;
+    deleteWin(id: bigint): Promise<void>;
+    getRecentWins(): Promise<Array<Win>>;
+    getWinCount(): Promise<bigint>;
+    getWinsByCategory(category: Category): Promise<Array<Win>>;
 }
-import type { Entry as _Entry, Mood as _Mood, Time as _Time } from "./declarations/backend.did.d.ts";
+import type { Category as _Category, Time as _Time, Win as _Win } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async addEntry(arg0: string | null, arg1: Mood, arg2: string): Promise<bigint> {
+    async addWin(arg0: string, arg1: Category | null): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.addEntry(to_candid_opt_n1(this._uploadFile, this._downloadFile, arg0), to_candid_Mood_n2(this._uploadFile, this._downloadFile, arg1), arg2);
+                const result = await this.actor.addWin(arg0, to_candid_opt_n1(this._uploadFile, this._downloadFile, arg1));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.addEntry(to_candid_opt_n1(this._uploadFile, this._downloadFile, arg0), to_candid_Mood_n2(this._uploadFile, this._downloadFile, arg1), arg2);
+            const result = await this.actor.addWin(arg0, to_candid_opt_n1(this._uploadFile, this._downloadFile, arg1));
             return result;
         }
     }
-    async deleteEntry(arg0: bigint): Promise<void> {
+    async deleteWin(arg0: bigint): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.deleteEntry(arg0);
+                const result = await this.actor.deleteWin(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.deleteEntry(arg0);
+            const result = await this.actor.deleteWin(arg0);
             return result;
         }
     }
-    async getEntriesByNickname(arg0: string): Promise<Array<Entry>> {
+    async getRecentWins(): Promise<Array<Win>> {
         if (this.processError) {
             try {
-                const result = await this.actor.getEntriesByNickname(arg0);
+                const result = await this.actor.getRecentWins();
                 return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getEntriesByNickname(arg0);
+            const result = await this.actor.getRecentWins();
             return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
         }
     }
-    async getEntryCount(): Promise<bigint> {
+    async getWinCount(): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.getEntryCount();
+                const result = await this.actor.getWinCount();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getEntryCount();
+            const result = await this.actor.getWinCount();
             return result;
         }
     }
-    async getRecentEntries(): Promise<Array<Entry>> {
+    async getWinsByCategory(arg0: Category): Promise<Array<Win>> {
         if (this.processError) {
             try {
-                const result = await this.actor.getRecentEntries();
+                const result = await this.actor.getWinsByCategory(to_candid_Category_n2(this._uploadFile, this._downloadFile, arg0));
                 return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getRecentEntries();
+            const result = await this.actor.getWinsByCategory(to_candid_Category_n2(this._uploadFile, this._downloadFile, arg0));
             return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
         }
     }
 }
-function from_candid_Entry_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Entry): Entry {
-    return from_candid_record_n6(_uploadFile, _downloadFile, value);
-}
-function from_candid_Mood_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Mood): Mood {
+function from_candid_Category_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Category): Category {
     return from_candid_variant_n9(_uploadFile, _downloadFile, value);
 }
-function from_candid_opt_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
-    return value.length === 0 ? null : value[0];
+function from_candid_Win_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Win): Win {
+    return from_candid_record_n6(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Category]): Category | null {
+    return value.length === 0 ? null : from_candid_Category_n8(_uploadFile, _downloadFile, value[0]);
 }
 function from_candid_record_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
-    nickname: [] | [string];
-    mood: _Mood;
     text: string;
     response: string;
     timestamp: _Time;
+    category: [] | [_Category];
 }): {
     id: bigint;
-    nickname?: string;
-    mood: Mood;
     text: string;
     response: string;
     timestamp: Time;
+    category?: Category;
 } {
     return {
         id: value.id,
-        nickname: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.nickname)),
-        mood: from_candid_Mood_n8(_uploadFile, _downloadFile, value.mood),
         text: value.text,
         response: value.response,
-        timestamp: value.timestamp
+        timestamp: value.timestamp,
+        category: record_opt_to_undefined(from_candid_opt_n7(_uploadFile, _downloadFile, value.category))
     };
 }
 function from_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
-    sad: null;
+    social: null;
 } | {
-    anxious: null;
+    justToday: null;
 } | {
-    happy: null;
+    school: null;
 } | {
-    okay: null;
+    personal: null;
 } | {
-    overwhelmed: null;
-}): Mood {
-    return "sad" in value ? Mood.sad : "anxious" in value ? Mood.anxious : "happy" in value ? Mood.happy : "okay" in value ? Mood.okay : "overwhelmed" in value ? Mood.overwhelmed : value;
+    health: null;
+}): Category {
+    return "social" in value ? Category.social : "justToday" in value ? Category.justToday : "school" in value ? Category.school : "personal" in value ? Category.personal : "health" in value ? Category.health : value;
 }
-function from_candid_vec_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Entry>): Array<Entry> {
-    return value.map((x)=>from_candid_Entry_n5(_uploadFile, _downloadFile, x));
+function from_candid_vec_n4(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Win>): Array<Win> {
+    return value.map((x)=>from_candid_Win_n5(_uploadFile, _downloadFile, x));
 }
-function to_candid_Mood_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Mood): _Mood {
+function to_candid_Category_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Category): _Category {
     return to_candid_variant_n3(_uploadFile, _downloadFile, value);
 }
-function to_candid_opt_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
-    return value === null ? candid_none() : candid_some(value);
+function to_candid_opt_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Category | null): [] | [_Category] {
+    return value === null ? candid_none() : candid_some(to_candid_Category_n2(_uploadFile, _downloadFile, value));
 }
-function to_candid_variant_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Mood): {
-    sad: null;
+function to_candid_variant_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Category): {
+    social: null;
 } | {
-    anxious: null;
+    justToday: null;
 } | {
-    happy: null;
+    school: null;
 } | {
-    okay: null;
+    personal: null;
 } | {
-    overwhelmed: null;
+    health: null;
 } {
-    return value == Mood.sad ? {
-        sad: null
-    } : value == Mood.anxious ? {
-        anxious: null
-    } : value == Mood.happy ? {
-        happy: null
-    } : value == Mood.okay ? {
-        okay: null
-    } : value == Mood.overwhelmed ? {
-        overwhelmed: null
+    return value == Category.social ? {
+        social: null
+    } : value == Category.justToday ? {
+        justToday: null
+    } : value == Category.school ? {
+        school: null
+    } : value == Category.personal ? {
+        personal: null
+    } : value == Category.health ? {
+        health: null
     } : value;
 }
 export interface CreateActorOptions {

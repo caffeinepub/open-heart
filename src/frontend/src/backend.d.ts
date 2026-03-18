@@ -7,26 +7,25 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-export interface Entry {
+export type Time = bigint;
+export interface Win {
     id: bigint;
-    nickname?: string;
-    mood: Mood;
     text: string;
     response: string;
     timestamp: Time;
+    category?: Category;
 }
-export type Time = bigint;
-export enum Mood {
-    sad = "sad",
-    anxious = "anxious",
-    happy = "happy",
-    okay = "okay",
-    overwhelmed = "overwhelmed"
+export enum Category {
+    social = "social",
+    justToday = "justToday",
+    school = "school",
+    personal = "personal",
+    health = "health"
 }
 export interface backendInterface {
-    addEntry(nickname: string | null, mood: Mood, text: string): Promise<bigint>;
-    deleteEntry(id: bigint): Promise<void>;
-    getEntriesByNickname(nickname: string): Promise<Array<Entry>>;
-    getEntryCount(): Promise<bigint>;
-    getRecentEntries(): Promise<Array<Entry>>;
+    addWin(text: string, category: Category | null): Promise<bigint>;
+    deleteWin(id: bigint): Promise<void>;
+    getRecentWins(): Promise<Array<Win>>;
+    getWinCount(): Promise<bigint>;
+    getWinsByCategory(category: Category): Promise<Array<Win>>;
 }

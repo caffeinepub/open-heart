@@ -1,70 +1,72 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Mood } from "../backend.d";
-import type { Entry } from "../backend.d";
+import type { Category, Win } from "../backend.d";
 import { useActor } from "./useActor";
 
-export type { Entry };
-export { Mood };
+export type { Win, Category };
 
-export function useRecentEntries() {
+export function useRecentWins() {
   const { actor, isFetching } = useActor();
-  return useQuery<Entry[]>({
-    queryKey: ["entries", "recent"],
+  return useQuery<Win[]>({
+    queryKey: ["wins", "recent"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getRecentEntries();
+      return actor.getRecentWins();
     },
     enabled: !!actor && !isFetching,
   });
 }
 
-export function useEntriesByNickname(nickname: string) {
+export function useWinCount() {
   const { actor, isFetching } = useActor();
-  return useQuery<Entry[]>({
-    queryKey: ["entries", "nickname", nickname],
+  return useQuery<bigint>({
+    queryKey: ["wins", "count"],
     queryFn: async () => {
-      if (!actor || !nickname) return [];
-      return actor.getEntriesByNickname(nickname);
+      if (!actor) return BigInt(0);
+      return actor.getWinCount();
     },
-    enabled: !!actor && !isFetching && !!nickname,
+    enabled: !!actor && !isFetching,
   });
 }
 
-export function useAddEntry() {
+export function useWinsByCategory(category: Category | null) {
+  const { actor, isFetching } = useActor();
+  return useQuery<Win[]>({
+    queryKey: ["wins", "category", category],
+    queryFn: async () => {
+      if (!actor || !category) return [];
+      return actor.getWinsByCategory(category);
+    },
+    enabled: !!actor && !isFetching && !!category,
+  });
+}
+
+export function useAddWin() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: {
-      nickname: string | null;
-      mood: Mood;
-      text: string;
-    }) => {
+    mutationFn: async (params: { text: string; category: Category | null }) => {
       if (!actor) throw new Error("Not connected");
-      const id = await actor.addEntry(
-        params.nickname,
-        params.mood,
-        params.text,
-      );
+      const id = await actor.addWin(params.text, params.category);
       return id;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entries"] });
+      queryClient.invalidateQueries({ queryKey: ["wins"] });
     },
   });
 }
 
-export function useDeleteEntry() {
+export function useDeleteWin() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: bigint) => {
       if (!actor) throw new Error("Not connected");
-      await actor.deleteEntry(id);
+      await actor.deleteWin(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entries"] });
+      queryClient.invalidateQueries({ queryKey: ["wins"] });
     },
   });
 }

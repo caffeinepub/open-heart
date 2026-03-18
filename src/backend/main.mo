@@ -1,5 +1,4 @@
 import List "mo:core/List";
-import Text "mo:core/Text";
 import Int "mo:core/Int";
 import Array "mo:core/Array";
 import Iter "mo:core/Iter";
@@ -8,151 +7,115 @@ import Runtime "mo:core/Runtime";
 import Nat "mo:core/Nat";
 import Time "mo:core/Time";
 
+
+
 actor {
   // DATA TYPES
-  type Mood = {
-    #happy;
-    #okay;
-    #sad;
-    #anxious;
-    #overwhelmed;
+  type Category = {
+    #school;
+    #health;
+    #social;
+    #personal;
+    #justToday;
   };
 
-  type Entry = {
+  type Win = {
     id : Nat;
-    nickname : ?Text;
-    mood : Mood;
     text : Text;
+    category : ?Category;
     timestamp : Time.Time;
     response : Text;
   };
 
-  module Entry {
-    public func compareByTimestamp(entry1 : Entry, entry2 : Entry) : Order.Order {
-      Int.compare(entry2.timestamp, entry1.timestamp);
+  module Win {
+    public func compareByTimestamp(win1 : Win, win2 : Win) : Order.Order {
+      Int.compare(win2.timestamp, win1.timestamp);
     };
   };
 
   // STATE
   var nextId = 0;
-  let entries = List.empty<Entry>();
+  let wins = List.empty<Win>();
 
-  // TEMPLATES
-  let happyResponses = [
-    "Your happiness is contagious! Keep shining bright.",
-    "It's wonderful to hear you're feeling happy! Remember, every day is a new opportunity for joy.",
-    "Celebrate your happy moments, big or small. You deserve it!",
-    "Happiness looks good on you! Keep spreading smiles.",
-    "Cherish these joyful moments – they are the building blocks of a positive life.",
-  ];
-
-  let okayResponses = [
-    "It's okay to have those 'just okay' days. Remember to be kind to yourself.",
-    "Being 'okay' is perfectly normal. You're doing great, even if it doesn't always feel that way.",
-    "Your feelings are valid, whether you feel okay or not. Take things at your own pace.",
-    "Remember, it's okay to be okay. Growth happens in these moments too.",
-    "It's important to care for yourself, especially on the 'okay' days. You're not alone.",
-  ];
-
-  let sadResponses = [
-    "I'm here for you. It's okay to feel sad sometimes. Let yourself feel and process your emotions.",
-    "Remember, it's okay to ask for help. You're not alone in this.",
-    "Sadness is a part of life, but it doesn't define you. Brighter days are ahead.",
-    "Take time to care for yourself. You are important and your feelings matter.",
-    "You are stronger than you think. This sad moment is just a chapter, not the whole story.",
-  ];
-
-  let anxiousResponses = [
-    "Anxiety can be overwhelming, but you have the strength to get through it.",
-    "Take deep breaths and remind yourself that this feeling will pass.",
-    "It's okay to slow down and take things one step at a time.",
-    "Remember, your mental health matters. Take breaks when you need them.",
-    "You are resilient. These anxious moments will pass, and you will find calm again.",
-  ];
-
-  let overwhelmedResponses = [
-    "When everything feels like too much, remember to take things one small step at a time.",
-    "It's okay to ask for help and take breaks when you need them.",
-    "You are doing the best you can, and that's enough. Be gentle with yourself.",
-    "Remember, you don't have to do it all at once. Prioritize your well-being.",
-    "This overwhelmed feeling is temporary. You are capable of handling challenges.",
+  // ENCOURAGEMENT MESSAGES
+  let encouragements = [
+    "That's awesome! Every win counts. 🎉",
+    "Way to go, keep up the great work!",
+    "You're making progress, celebrate every step!",
+    "Proud of you for taking action and winning!",
+    "Every small win adds up to big success!",
+    "Keep it up, you're doing amazing!",
+    "Your effort is inspiring, congrats on the win!",
+    "Each win is a building block to greatness.",
+    "Celebrate your achievements, no matter the size!",
+    "You're unstoppable - keep crushing it!",
   ];
 
   // HELPER FUNCTIONS
-  func selectRandomResponse(responses : [Text]) : Text {
+  func selectRandomEncouragement() : Text {
     let time = Time.now();
-    let index = Int.abs(time) % responses.size();
-    responses[index];
-  };
-
-  func generateResponse(mood : Mood) : Text {
-    switch (mood) {
-      case (#happy) { selectRandomResponse(happyResponses) };
-      case (#okay) { selectRandomResponse(okayResponses) };
-      case (#sad) { selectRandomResponse(sadResponses) };
-      case (#anxious) { selectRandomResponse(anxiousResponses) };
-      case (#overwhelmed) { selectRandomResponse(overwhelmedResponses) };
-    };
+    let index = Int.abs(time) % encouragements.size();
+    encouragements[index];
   };
 
   // CORE FUNCTIONS
-  public shared ({ caller }) func addEntry(nickname : ?Text, mood : Mood, text : Text) : async Nat {
+  public shared ({ caller }) func addWin(text : Text, category : ?Category) : async Nat {
     let id = nextId;
     nextId += 1;
 
-    let entry : Entry = {
+    let win : Win = {
       id;
-      nickname;
-      mood;
       text;
+      category;
       timestamp = Time.now();
-      response = generateResponse(mood);
+      response = selectRandomEncouragement();
     };
 
-    entries.add(entry);
+    wins.add(win);
     id;
   };
 
-  public shared ({ caller }) func deleteEntry(id : Nat) : async () {
-    let entryCount = entries.size();
-    if (id >= entryCount) {
-      Runtime.trap("Entry not found");
+  public shared ({ caller }) func deleteWin(id : Nat) : async () {
+    let winsCount = wins.size();
+    if (id >= winsCount) {
+      Runtime.trap("Win not found");
     };
 
-    let currentEntries = entries.toArray();
-    if (id >= currentEntries.size()) {
-      Runtime.trap("Entry not found");
+    let currentWins = wins.toArray();
+    if (id >= currentWins.size()) {
+      Runtime.trap("Win not found");
     };
 
-    let filteredEntries = currentEntries.filter(
-      func(entry) { entry.id != id }
+    let filteredWins = currentWins.filter(
+      func(win) { win.id != id }
     );
 
-    entries.clear();
-    entries.addAll(filteredEntries.values());
+    wins.clear();
+    wins.addAll(filteredWins.values());
   };
 
-  public query ({ caller }) func getRecentEntries() : async [Entry] {
-    entries.toArray().sort(Entry.compareByTimestamp : (Entry, Entry) -> Order.Order).values().take(20).toArray();
+  public query ({ caller }) func getRecentWins() : async [Win] {
+    wins.toArray().sort(Win.compareByTimestamp : (Win, Win) -> Order.Order).values().take(20).toArray();
   };
 
-  public query ({ caller }) func getEntriesByNickname(nickname : Text) : async [Entry] {
-    let filtered = entries.toArray().sort(Entry.compareByTimestamp : (Entry, Entry) -> Order.Order).filter(
-      func(entry) {
-        switch (entry.nickname) {
+  public query ({ caller }) func getWinsByCategory(category : Category) : async [Win] {
+    let filtered = wins.toArray().sort(Win.compareByTimestamp : (Win, Win) -> Order.Order).filter(
+      func(win) {
+        switch (win.category) {
           case (null) { false };
-          case (?n) { n == nickname };
+          case (?c) { c == category };
         };
       }
     );
     filtered.values().take(20).toArray();
   };
 
-  func internalGetEntries() : [Entry] {
-    entries.toArray();
+  func internalGetWins() : [Win] {
+    wins.toArray();
   };
 
-  public query ({ caller }) func getEntryCount() : async Nat {
-    entries.size();
+  public query ({ caller }) func getWinCount() : async Nat {
+    wins.size();
   };
 };
+

@@ -8,57 +8,55 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const Mood = IDL.Variant({
-  'sad' : IDL.Null,
-  'anxious' : IDL.Null,
-  'happy' : IDL.Null,
-  'okay' : IDL.Null,
-  'overwhelmed' : IDL.Null,
+export const Category = IDL.Variant({
+  'social' : IDL.Null,
+  'justToday' : IDL.Null,
+  'school' : IDL.Null,
+  'personal' : IDL.Null,
+  'health' : IDL.Null,
 });
 export const Time = IDL.Int;
-export const Entry = IDL.Record({
+export const Win = IDL.Record({
   'id' : IDL.Nat,
-  'nickname' : IDL.Opt(IDL.Text),
-  'mood' : Mood,
   'text' : IDL.Text,
   'response' : IDL.Text,
   'timestamp' : Time,
+  'category' : IDL.Opt(Category),
 });
 
 export const idlService = IDL.Service({
-  'addEntry' : IDL.Func([IDL.Opt(IDL.Text), Mood, IDL.Text], [IDL.Nat], []),
-  'deleteEntry' : IDL.Func([IDL.Nat], [], []),
-  'getEntriesByNickname' : IDL.Func([IDL.Text], [IDL.Vec(Entry)], ['query']),
-  'getEntryCount' : IDL.Func([], [IDL.Nat], ['query']),
-  'getRecentEntries' : IDL.Func([], [IDL.Vec(Entry)], ['query']),
+  'addWin' : IDL.Func([IDL.Text, IDL.Opt(Category)], [IDL.Nat], []),
+  'deleteWin' : IDL.Func([IDL.Nat], [], []),
+  'getRecentWins' : IDL.Func([], [IDL.Vec(Win)], ['query']),
+  'getWinCount' : IDL.Func([], [IDL.Nat], ['query']),
+  'getWinsByCategory' : IDL.Func([Category], [IDL.Vec(Win)], ['query']),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const Mood = IDL.Variant({
-    'sad' : IDL.Null,
-    'anxious' : IDL.Null,
-    'happy' : IDL.Null,
-    'okay' : IDL.Null,
-    'overwhelmed' : IDL.Null,
+  const Category = IDL.Variant({
+    'social' : IDL.Null,
+    'justToday' : IDL.Null,
+    'school' : IDL.Null,
+    'personal' : IDL.Null,
+    'health' : IDL.Null,
   });
   const Time = IDL.Int;
-  const Entry = IDL.Record({
+  const Win = IDL.Record({
     'id' : IDL.Nat,
-    'nickname' : IDL.Opt(IDL.Text),
-    'mood' : Mood,
     'text' : IDL.Text,
     'response' : IDL.Text,
     'timestamp' : Time,
+    'category' : IDL.Opt(Category),
   });
   
   return IDL.Service({
-    'addEntry' : IDL.Func([IDL.Opt(IDL.Text), Mood, IDL.Text], [IDL.Nat], []),
-    'deleteEntry' : IDL.Func([IDL.Nat], [], []),
-    'getEntriesByNickname' : IDL.Func([IDL.Text], [IDL.Vec(Entry)], ['query']),
-    'getEntryCount' : IDL.Func([], [IDL.Nat], ['query']),
-    'getRecentEntries' : IDL.Func([], [IDL.Vec(Entry)], ['query']),
+    'addWin' : IDL.Func([IDL.Text, IDL.Opt(Category)], [IDL.Nat], []),
+    'deleteWin' : IDL.Func([IDL.Nat], [], []),
+    'getRecentWins' : IDL.Func([], [IDL.Vec(Win)], ['query']),
+    'getWinCount' : IDL.Func([], [IDL.Nat], ['query']),
+    'getWinsByCategory' : IDL.Func([Category], [IDL.Vec(Win)], ['query']),
   });
 };
 
